@@ -1,0 +1,179 @@
+{
+  "version": "1.0",
+  "description": "Service Memory Copilot 评估集。40 条人工标注样本：25 条话术分类样本 + 15 条端到端场景样本。",
+  "distribution": {
+    "promise_classification": { "PROMISE": 10, "ESTIMATE": 5, "ACTION": 5, "EXPLANATION": 5 },
+    "scenarios": { "repeat_contact": 5, "sensitive_beauty": 5, "normal_inquiry": 5 }
+  },
+  "promise_samples": [
+    { "id": "PS_01", "text": "明天中午 12 点前一定给您重新补发正确的颜色。", "expected_category": "PROMISE", "note": "明确承诺 + 明确时限" },
+    { "id": "PS_02", "text": "我保证今天之内把退款给您处理好。", "expected_category": "PROMISE", "note": "保证 + 时限" },
+    { "id": "PS_03", "text": "我答应您，明天一定给您答复。", "expected_category": "PROMISE", "note": "我答应 + 一定" },
+    { "id": "PS_04", "text": "明天就给您补发一个新的粉底刷。", "expected_category": "PROMISE", "note": "带时限的强承诺动作" },
+    { "id": "PS_05", "text": "今天内一定帮您把优惠券补上。", "expected_category": "PROMISE", "note": "一定 + 今天内" },
+    { "id": "PS_06", "text": "48 小时内给您重新寄出正确的色号。", "expected_category": "PROMISE", "note": "明确时限动作" },
+    { "id": "PS_07", "text": "您放心，我承诺明天上午一定把物流单号发您。", "expected_category": "PROMISE", "note": "承诺 + 明天上午" },
+    { "id": "PS_08", "text": "务必在今天 18 点前给您退款到账。", "expected_category": "PROMISE", "note": "务必 + 具体时间" },
+    { "id": "PS_09", "text": "我肯定给您补发，明天中午之前一定送到。", "expected_category": "PROMISE", "note": "肯定 + 一定" },
+    { "id": "PS_10", "text": "今天就给您安排补发，绝不拖延。", "expected_category": "PROMISE", "note": "今天就 + 绝不" },
+
+    { "id": "PS_11", "text": "预计 24 小时内处理完成。", "expected_category": "ESTIMATE", "note": "预计 + 相对时限" },
+    { "id": "PS_12", "text": "大概明天就能到您那边。", "expected_category": "ESTIMATE", "note": "大概" },
+    { "id": "PS_13", "text": "应该这两天就会给您发出。", "expected_category": "ESTIMATE", "note": "应该" },
+    { "id": "PS_14", "text": "正常情况下明天就能补发出去。", "expected_category": "ESTIMATE", "note": "正常情况下 + 具体动作（易错点）" },
+    { "id": "PS_15", "text": "尽量今天帮您处理，争取明天发出。", "expected_category": "ESTIMATE", "note": "尽量 / 争取" },
+
+    { "id": "PS_16", "text": "我帮您提交补发申请。", "expected_category": "ACTION", "note": "过程性执行动作" },
+    { "id": "PS_17", "text": "我这就去核实一下库存情况。", "expected_category": "ACTION", "note": "我这就去" },
+    { "id": "PS_18", "text": "已经为您提交退款申请了。", "expected_category": "ACTION", "note": "已为您" },
+    { "id": "PS_19", "text": "我帮您反馈给仓库那边核实。", "expected_category": "ACTION", "note": "帮您反馈" },
+    { "id": "PS_20", "text": "正在为您查询订单的物流状态。", "expected_category": "ACTION", "note": "正在为您" },
+
+    { "id": "PS_21", "text": "物流正常的情况下需要 2-3 天送达。", "expected_category": "EXPLANATION", "note": "一般性流程说明（易错点）" },
+    { "id": "PS_22", "text": "根据规定，拆封后的化妆品不支持无理由退货。", "expected_category": "EXPLANATION", "note": "规则说明" },
+    { "id": "PS_23", "text": "退款到账时间以银行处理为准。", "expected_category": "EXPLANATION", "note": "流程说明" },
+    { "id": "PS_24", "text": "这款是干皮友好型，遮瑕力中等偏上。", "expected_category": "EXPLANATION", "note": "产品说明" },
+    { "id": "PS_25", "text": "因为仓库拣货失误，所以给您发错了色号。", "expected_category": "EXPLANATION", "note": "原因说明" }
+  ],
+  "scenarios": [
+    {
+      "id": "SC_01", "category": "repeat_contact", "name": "重复进线 · 无历史承诺",
+      "expected": { "risk_codes": ["repeat_contact"], "root_cause": "repeat_contact", "forbid_risk_codes": ["unfulfilled_promise", "sensitive_beauty"] },
+      "consumer": { "id": "EV_R1", "name": "评估-重复进线A", "level": "普通会员", "city": "上海", "skinProfile": "未知", "tags": [] },
+      "orders": [{ "id": "EV_R1_O1", "type": "sales", "sku": "FD-1024-02", "product": "轻雾持妆粉底液", "shade": "暖调自然色 02", "amount": 219, "deliveredDay": -6, "refundStatus": "none" }],
+      "sessions": [
+        { "day": -5, "hour": "10:00", "agent": "客服-甲", "messages": [["consumer", "10:00", "我的订单怎么还没发货？"], ["agent", "10:05", "我帮您查一下物流。"]] },
+        { "day": -2, "hour": "15:00", "agent": "客服-乙", "messages": [["consumer", "15:00", "我上次问的发货问题，现在还没消息吗？"], ["agent", "15:04", "非常抱歉，我再帮您确认一下。"]] }
+      ],
+      "current": "都问了三次了，一直没人给我明确答复，到底什么时候能处理？"
+    },
+    {
+      "id": "SC_02", "category": "repeat_contact", "name": "重复进线 · 无历史承诺（第二例）",
+      "expected": { "risk_codes": ["repeat_contact"], "root_cause": "repeat_contact", "forbid_risk_codes": ["unfulfilled_promise"] },
+      "consumer": { "id": "EV_R2", "name": "评估-重复进线B", "level": "VIP1", "city": "成都", "skinProfile": "油皮", "tags": [] },
+      "orders": [{ "id": "EV_R2_O1", "type": "sales", "sku": "PW-4410-01", "product": "空气感散粉", "shade": "透明色", "amount": 129, "deliveredDay": -8, "refundStatus": "none" }],
+      "sessions": [
+        { "day": -7, "hour": "09:00", "agent": "客服-甲", "messages": [["consumer", "09:00", "散粉的粉扑怎么用？"], ["agent", "09:03", "建议您先取少量轻拍上脸。"]] },
+        { "day": -3, "hour": "20:00", "agent": "客服-乙", "messages": [["consumer", "20:00", "粉扑还是不太会用，有没有教程？"], ["agent", "20:05", "我帮您找一下教程。"]] }
+      ],
+      "current": "又是我，教程还是没发我，这已经是第三次问了。"
+    },
+    {
+      "id": "SC_03", "category": "repeat_contact", "name": "重复进线 · 无历史承诺（第三例）",
+      "expected": { "risk_codes": ["repeat_contact"], "root_cause": "repeat_contact", "forbid_risk_codes": ["unfulfilled_promise", "sensitive_beauty"] },
+      "consumer": { "id": "EV_R3", "name": "评估-重复进线C", "level": "普通会员", "city": "北京", "skinProfile": "干皮", "tags": [] },
+      "orders": [{ "id": "EV_R3_O1", "type": "sales", "sku": "LP-5520-06", "product": "水润唇釉", "shade": "豆沙 06", "amount": 99, "deliveredDay": -10, "refundStatus": "none" }],
+      "sessions": [
+        { "day": -9, "hour": "11:00", "agent": "客服-甲", "messages": [["consumer", "11:00", "唇釉色号和图片差别大吗？"], ["agent", "11:02", "实物偏豆沙调，比较日常。"]] },
+        { "day": -4, "hour": "16:00", "agent": "客服-乙", "messages": [["consumer", "16:00", "我还是想确认下色号问题。"], ["agent", "16:03", "我再帮您核实一下。"]] }
+      ],
+      "current": "第二次问了，还是没人给我一个确定的说法。"
+    },
+    {
+      "id": "SC_04", "category": "repeat_contact", "name": "重复进线 · 无历史承诺（第四例）",
+      "expected": { "risk_codes": ["repeat_contact"], "root_cause": "repeat_contact", "forbid_risk_codes": ["unfulfilled_promise"] },
+      "consumer": { "id": "EV_R4", "name": "评估-重复进线D", "level": "VIP2", "city": "广州", "skinProfile": "混合皮", "tags": [] },
+      "orders": [{ "id": "EV_R4_O1", "type": "sales", "sku": "PP-6630-01", "product": "控油妆前乳", "shade": "标准", "amount": 179, "deliveredDay": -5, "refundStatus": "none" }],
+      "sessions": [
+        { "day": -4, "hour": "14:00", "agent": "客服-甲", "messages": [["consumer", "14:00", "妆前乳可以和其他品牌一起用吗？"], ["agent", "14:03", "可以，注意先做局部测试。"]] },
+        { "day": -1, "hour": "19:00", "agent": "客服-乙", "messages": [["consumer", "19:00", "上次那个问题我还是不太明白。"], ["agent", "19:05", "我再帮您说明一下。"]] }
+      ],
+      "current": "又问一遍，能不能给我一个明确的答复，不要每次都让我再等。"
+    },
+    {
+      "id": "SC_05", "category": "repeat_contact", "name": "重复进线 · 无历史承诺（第五例）",
+      "expected": { "risk_codes": ["repeat_contact"], "root_cause": "repeat_contact", "forbid_risk_codes": ["unfulfilled_promise", "sensitive_beauty"] },
+      "consumer": { "id": "EV_R5", "name": "评估-重复进线E", "level": "普通会员", "city": "杭州", "skinProfile": "干皮", "tags": [] },
+      "orders": [{ "id": "EV_R5_O1", "type": "sales", "sku": "CC-3310-02", "product": "柔光遮瑕膏", "shade": "自然色 02", "amount": 149, "deliveredDay": -7, "refundStatus": "none" }],
+      "sessions": [
+        { "day": -6, "hour": "10:30", "agent": "客服-甲", "messages": [["consumer", "10:30", "遮瑕膏能遮黑眼圈吗？"], ["agent", "10:33", "可以，建议少量多次叠加。"]] },
+        { "day": -2, "hour": "21:00", "agent": "客服-乙", "messages": [["consumer", "21:00", "我按你说的方法试了，还是不太行。"], ["agent", "21:05", "我帮您再确认一下用法。"]] }
+      ],
+      "current": "第三次来了，一直没解决，我很失望。"
+    },
+
+    {
+      "id": "SC_06", "category": "sensitive_beauty", "name": "敏感美妆 · 首次反馈不适",
+      "expected": { "risk_codes": ["sensitive_beauty"], "root_cause": "sensitive_incident", "must_block_recommendation": true, "require_actions": ["record_sensitive_incident", "escalate_case"] },
+      "consumer": { "id": "EV_S1", "name": "评估-敏感A", "level": "VIP1", "city": "上海", "skinProfile": "自述敏感肌", "tags": [] },
+      "orders": [{ "id": "EV_S1_O1", "type": "sales", "sku": "FD-2201-03", "product": "丝绒雾感粉底液", "shade": "自然色 03", "amount": 259, "deliveredDay": -5, "refundStatus": "none" }],
+      "sessions": [],
+      "current": "我用了你们的粉底液之后脸上红肿还刺痛，这是怎么回事？"
+    },
+    {
+      "id": "SC_07", "category": "sensitive_beauty", "name": "敏感美妆 · 历史未登记（关键盲区）",
+      "expected": { "risk_codes": ["sensitive_beauty"], "root_cause": "sensitive_incident", "must_block_recommendation": true, "require_actions": ["record_sensitive_incident", "escalate_case"] },
+      "consumer": { "id": "EV_S2", "name": "评估-敏感B", "level": "VIP1", "city": "成都", "skinProfile": "自述敏感肌", "tags": ["敏感肌关注"] },
+      "orders": [{ "id": "EV_S2_O1", "type": "sales", "sku": "FD-2201-03", "product": "丝绒雾感粉底液", "shade": "自然色 03", "amount": 259, "deliveredDay": -20, "refundStatus": "done", "refundedDay": -16 }],
+      "tickets": [{ "id": "EV_S2_T1", "type": "sensitive_skin", "title": "使用后皮肤泛红刺痛", "status": "RESOLVED", "day": -16, "result": "已按常规售后办理仅退款，未登记产品不适事件。", "incidentLogged": false }],
+      "sessions": [{ "day": -16, "hour": "15:40", "agent": "客服-甲", "messages": [["consumer", "15:40", "用了粉底液之后脸又红又刺痛。"], ["agent", "15:45", "我帮您提交退款申请。"]] }],
+      "system_events": [{ "day": 0, "hour": "13:48", "type": "product_push", "title": "智能推荐推送：丝绒雾感粉底液 升级版", "detail": "APP 首页个性化推荐位推送了同系列产品。" }],
+      "current": "上次用了脸很红很刺痛，你们现在又给我推荐这个？"
+    },
+    {
+      "id": "SC_08", "category": "sensitive_beauty", "name": "敏感美妆 · 瘙痒起疹",
+      "expected": { "risk_codes": ["sensitive_beauty"], "root_cause": "sensitive_incident", "must_block_recommendation": true, "require_actions": ["record_sensitive_incident"] },
+      "consumer": { "id": "EV_S3", "name": "评估-敏感C", "level": "普通会员", "city": "南京", "skinProfile": "未知", "tags": [] },
+      "orders": [{ "id": "EV_S3_O1", "type": "sales", "sku": "CC-3310-02", "product": "柔光遮瑕膏", "shade": "自然色 02", "amount": 149, "deliveredDay": -3, "refundStatus": "none" }],
+      "sessions": [],
+      "current": "用了遮瑕膏之后起疹子了，很痒，还有点脱皮。"
+    },
+    {
+      "id": "SC_09", "category": "sensitive_beauty", "name": "敏感美妆 · 灼热泛红",
+      "expected": { "risk_codes": ["sensitive_beauty"], "root_cause": "sensitive_incident", "must_block_recommendation": true, "require_actions": ["record_sensitive_incident"] },
+      "consumer": { "id": "EV_S4", "name": "评估-敏感D", "level": "VIP2", "city": "北京", "skinProfile": "自述敏感肌", "tags": [] },
+      "orders": [{ "id": "EV_S4_O1", "type": "sales", "sku": "PP-6630-01", "product": "控油妆前乳", "shade": "标准", "amount": 179, "deliveredDay": -2, "refundStatus": "none" }],
+      "sessions": [],
+      "current": "涂上去之后脸很灼热，还发红了，现在都不敢用了。"
+    },
+    {
+      "id": "SC_10", "category": "sensitive_beauty", "name": "敏感美妆 · 明确过敏",
+      "expected": { "risk_codes": ["sensitive_beauty"], "root_cause": "sensitive_incident", "must_block_recommendation": true, "require_actions": ["record_sensitive_incident", "escalate_case"] },
+      "consumer": { "id": "EV_S5", "name": "评估-敏感E", "level": "VIP1", "city": "深圳", "skinProfile": "自述敏感肌", "tags": [] },
+      "orders": [{ "id": "EV_S5_O1", "type": "sales", "sku": "LP-5520-06", "product": "水润唇釉", "shade": "豆沙 06", "amount": 99, "deliveredDay": -4, "refundStatus": "none" }],
+      "sessions": [],
+      "current": "我好像是过敏了，嘴唇周围起包，又痒又肿。"
+    },
+
+    {
+      "id": "SC_11", "category": "normal_inquiry", "name": "普通咨询 · 用法咨询",
+      "expected": { "forbid_risk_codes": ["unfulfilled_promise", "sensitive_beauty", "public_complaint"], "max_risk": "LOW", "max_unresolved": 0 },
+      "consumer": { "id": "EV_N1", "name": "评估-常规A", "level": "普通会员", "city": "南京", "skinProfile": "干皮", "tags": [] },
+      "orders": [{ "id": "EV_N1_O1", "type": "sales", "sku": "CC-3310-02", "product": "柔光遮瑕膏", "shade": "自然色 02", "amount": 149, "deliveredDay": -2, "refundStatus": "none" }],
+      "sessions": [],
+      "current": "你好，刚收到的遮瑕膏，干皮用之前需要先上妆前乳吗？"
+    },
+    {
+      "id": "SC_12", "category": "normal_inquiry", "name": "普通咨询 · 物流查询",
+      "expected": { "forbid_risk_codes": ["unfulfilled_promise", "sensitive_beauty"], "max_risk": "LOW", "max_unresolved": 0 },
+      "consumer": { "id": "EV_N2", "name": "评估-常规B", "level": "普通会员", "city": "武汉", "skinProfile": "油皮", "tags": [] },
+      "orders": [{ "id": "EV_N2_O1", "type": "sales", "sku": "FD-1024-01", "product": "轻雾持妆粉底液", "shade": "冷调象牙白 01", "amount": 219, "deliveredDay": -1, "refundStatus": "none" }],
+      "sessions": [],
+      "current": "请问我的快递到哪里了？"
+    },
+    {
+      "id": "SC_13", "category": "normal_inquiry", "name": "普通咨询 · 色号推荐",
+      "expected": { "forbid_risk_codes": ["unfulfilled_promise", "sensitive_beauty"], "max_risk": "LOW", "max_unresolved": 0 },
+      "consumer": { "id": "EV_N3", "name": "评估-常规C", "level": "普通会员", "city": "西安", "skinProfile": "干皮 / 冷调肤色", "tags": [] },
+      "orders": [{ "id": "EV_N3_O1", "type": "sales", "sku": "FD-1024-01", "product": "轻雾持妆粉底液", "shade": "冷调象牙白 01", "amount": 219, "deliveredDay": -3, "refundStatus": "none" }],
+      "sessions": [],
+      "current": "我是冷调肤色，这个色号适合我吗？"
+    },
+    {
+      "id": "SC_14", "category": "normal_inquiry", "name": "普通咨询 · 保质期",
+      "expected": { "forbid_risk_codes": ["unfulfilled_promise", "sensitive_beauty"], "max_risk": "LOW", "max_unresolved": 0 },
+      "consumer": { "id": "EV_N4", "name": "评估-常规D", "level": "普通会员", "city": "长沙", "skinProfile": "混合皮", "tags": [] },
+      "orders": [{ "id": "EV_N4_O1", "type": "sales", "sku": "PW-4410-01", "product": "空气感散粉", "shade": "透明色", "amount": 129, "deliveredDay": -5, "refundStatus": "none" }],
+      "sessions": [],
+      "current": "这个散粉开封之后能用多久？"
+    },
+    {
+      "id": "SC_15", "category": "normal_inquiry", "name": "普通咨询 · 发票",
+      "expected": { "forbid_risk_codes": ["unfulfilled_promise", "sensitive_beauty"], "max_risk": "LOW", "max_unresolved": 0 },
+      "consumer": { "id": "EV_N5", "name": "评估-常规E", "level": "普通会员", "city": "天津", "skinProfile": "干皮", "tags": [] },
+      "orders": [{ "id": "EV_N5_O1", "type": "sales", "sku": "LP-5520-06", "product": "水润唇釉", "shade": "豆沙 06", "amount": 99, "deliveredDay": -4, "refundStatus": "none" }],
+      "sessions": [],
+      "current": "我想开一张电子发票，要怎么操作？"
+    }
+  ]
+}

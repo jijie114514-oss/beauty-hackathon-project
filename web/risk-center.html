@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Risk Center · Service Memory Copilot</title>
+<link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">SM</div>
+    <div>
+      <div class="brand-name">Risk Center</div>
+      <div class="brand-sub">Service Memory Copilot · 风险与未闭环事项</div>
+    </div>
+  </div>
+  <div class="topbar-spacer"></div>
+  <button class="btn sm" id="btnRefresh">刷新</button>
+  <a class="btn sm" href="/">← 返回工作台</a>
+</header>
+
+<div class="rc-layout">
+  <div class="rc-stats" id="rcStats"></div>
+  <div class="rc-grid">
+    <div class="rc-col">
+      <div class="card">
+        <div class="card-head">High Risk Conversations <span class="sub">当前高风险会话</span><span class="right" id="c1"></span></div>
+        <div class="card-body" id="listHigh"><div class="skeleton">加载中…</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head">Repeat Contacts <span class="sub">重复进线</span><span class="right" id="c3"></span></div>
+        <div class="card-body" id="listRepeat"></div>
+      </div>
+    </div>
+    <div class="rc-col">
+      <div class="card">
+        <div class="card-head">Unresolved Promises <span class="sub">未兑现客服承诺</span><span class="right" id="c2"></span></div>
+        <div class="card-body" id="listPromise"></div>
+      </div>
+      <div class="card">
+        <div class="card-head">Escalated Cases <span class="sub">升级事件</span><span class="right" id="c4"></span></div>
+        <div class="card-body" id="listEscalated"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<script type="module" src="/js/risk-center.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "service-memory-copilot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Service Memory Copilot - AI 客服共情助手：恢复消费者服务记忆，识别未解决问题与未兑现承诺",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.js",
+    "dev": "node --env-file-if-exists=.env --watch server/index.js",
+    "selftest": "node --env-file-if-exists=.env scripts/selftest.js",
+    "acceptance": "node --env-file-if-exists=.env scripts/acceptance.js",
+    "llm-check": "node --env-file-if-exists=.env scripts/llm-check.js",
+    "eval": "node --env-file-if-exists=.env scripts/evaluate.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Service Memory Copilot · 客服工作台</title>
+<link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">SM</div>
+    <div>
+      <div class="brand-name">Service Memory Copilot</div>
+      <div class="brand-sub">AI 客服共情助手 · 恢复消费者的服务记忆</div>
+    </div>
+  </div>
+
+  <div class="topbar-spacer"></div>
+
+  <div class="engine-pill" id="enginePill">
+    <span class="engine-dot" id="engineDot"></span>
+    <span id="engineText">Agent 引擎加载中…</span>
+  </div>
+
+  <button class="btn sm" id="btnReset" title="把 Mock 数据恢复到初始状态">重置数据</button>
+  <a class="btn sm" href="/risk-center">Risk Center →</a>
+</header>
+
+<main class="layout">
+
+  <!-- ── 消费者列表 ─────────────────────────────────────── -->
+  <section class="col">
+    <div class="card grow">
+      <div class="card-head">
+        消费者
+        <span class="sub" id="consumerCount"></span>
+      </div>
+      <div class="consumer-list" id="consumerList"></div>
+    </div>
+  </section>
+
+  <!-- ── 左：消费者聊天 ─────────────────────────────────── -->
+  <section class="col">
+    <div class="card grow">
+      <div class="chat-head">
+        <div class="avatar" id="chatAvatar">—</div>
+        <div style="min-width:0">
+          <div style="font-size:13px;font-weight:650" id="chatName">—</div>
+          <div style="font-size:11px;color:var(--ink-3)" id="chatChannel">—</div>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-input">
+        <textarea id="msgInput" placeholder="模拟消费者发送消息…（Enter 发送，Shift+Enter 换行）"></textarea>
+        <div class="row">
+          <button class="btn primary sm" id="btnSend">发送并重新分析</button>
+          <span class="hint">消费者再次进线后，AI 会自动重新拉取全部历史数据</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 中：消费者服务信息 ─────────────────────────────── -->
+  <section class="col">
+    <div class="card grow">
+      <div class="card-head">
+        消费者服务信息
+        <span class="sub">聊天 · 订单 · 工单</span>
+      </div>
+      <div class="card-body" id="customerPanel">
+        <div class="skeleton">加载中…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 右：AI Copilot ─────────────────────────────────── -->
+  <section class="col">
+    <div class="card grow">
+      <div class="copilot-head">
+        <span class="title">AI Copilot</span>
+        <span class="badge brand" id="copilotEngine">—</span>
+        <span class="meta" id="copilotMeta"></span>
+      </div>
+      <div class="case-bar" id="caseBar"></div>
+      <div class="copilot-scroll" id="copilotPanel">
+        <div class="skeleton">正在恢复服务记忆…</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<div id="modalRoot"></div>
+
+<script type="module" src="/js/workbench.js"></script>
+</body>
+</html>
